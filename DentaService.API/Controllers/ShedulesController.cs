@@ -19,42 +19,23 @@ namespace DentaService.API.Controllers
             _context = context;
         }
 
-        // GET: Shedules
+ 
         public async Task<IActionResult> Index()
         {
             return View(await _context.Shedules.ToListAsync());
         }
 
-        // GET: Shedules/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        
 
-            var shedule = await _context.Shedules
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (shedule == null)
-            {
-                return NotFound();
-            }
-
-            return View(shedule);
-        }
-
-        // GET: Shedules/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Shedules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Date,Campus")] Shedule shedule)
+        public async Task<IActionResult> Create(Shedule shedule)
         {
             if (ModelState.IsValid)
             {
