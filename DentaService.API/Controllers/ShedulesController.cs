@@ -46,7 +46,7 @@ namespace DentaService.API.Controllers
             return View(shedule);
         }
 
-        // GET: Shedules/Edit/5
+  
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -62,12 +62,9 @@ namespace DentaService.API.Controllers
             return View(shedule);
         }
 
-        // POST: Shedules/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Date,Campus")] Shedule shedule)
+        public async Task<IActionResult> Edit(int id, Shedule shedule)
         {
             if (id != shedule.ID)
             {
@@ -97,7 +94,7 @@ namespace DentaService.API.Controllers
             return View(shedule);
         }
 
-        // GET: Shedules/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -112,19 +109,11 @@ namespace DentaService.API.Controllers
                 return NotFound();
             }
 
-            return View(shedule);
-        }
-
-        // POST: Shedules/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var shedule = await _context.Shedules.FindAsync(id);
             _context.Shedules.Remove(shedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool SheduleExists(int id)
         {

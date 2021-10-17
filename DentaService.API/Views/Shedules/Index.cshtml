@@ -41,7 +41,7 @@
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning">Editar</a>
-                                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Borrar</a>
+                                    <button data-id="@item.ID" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button>
                                 </td>
                             </tr>
                         }
@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-
+<partial name="_DeleteDialog" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -70,7 +70,8 @@
                 ]
             });
 
-
+            // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Shedules/Delete/', false);
 
         });
     </script>
