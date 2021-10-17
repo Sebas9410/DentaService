@@ -14,11 +14,14 @@ namespace DentaService.API.Data
 
         }
 
+        public DbSet<Especialization> Especializations { get; set; }
+
         public DbSet<Shedule> Shedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Especialization>().HasIndex(x => x.Description).IsUnique();
             modelBuilder.Entity<Shedule>().HasIndex(x => x.Date).IsUnique();
         }
     }

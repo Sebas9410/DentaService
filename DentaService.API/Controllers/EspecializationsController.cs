@@ -3,42 +3,40 @@ using DentaService.API.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DentaService.API.Controllers
 {
-    public class ShedulesController : Controller
+    public class EspecializationsController : Controller
     {
         private readonly DataContext _context;
 
-        public ShedulesController(DataContext context)
+        public EspecializationsController(DataContext context)
         {
             _context = context;
         }
 
-
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Shedules.ToListAsync());
+            return View(await _context.Especializations.ToListAsync());
         }
-
-
 
         public IActionResult Create()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Shedule shedule)
+        public async Task<IActionResult> Create(Especialization especialization)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Add(shedule);
+                    _context.Add(especialization);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -46,7 +44,7 @@ namespace DentaService.API.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe esta fecha en la agenda.");
+                        ModelState.AddModelError(string.Empty, "Ya existe esta especialización.");
                     }
                     else
                     {
@@ -59,7 +57,7 @@ namespace DentaService.API.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(shedule);
+            return View(especialization);
         }
 
 
@@ -70,19 +68,19 @@ namespace DentaService.API.Controllers
                 return NotFound();
             }
 
-            Shedule shedule = await _context.Shedules.FindAsync(id);
-            if (shedule == null)
+            Especialization especialization = await _context.Especializations.FindAsync(id);
+            if (especialization == null)
             {
                 return NotFound();
             }
-            return View(shedule);
+            return View(especialization);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Shedule shedule)
+        public async Task<IActionResult> Edit(int id, Especialization especialization)
         {
-            if (id != shedule.ID)
+            if (id != especialization.ID)
             {
                 return NotFound();
             }
@@ -91,7 +89,7 @@ namespace DentaService.API.Controllers
             {
                 try
                 {
-                    _context.Update(shedule);
+                    _context.Update(especialization);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -99,7 +97,7 @@ namespace DentaService.API.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe esta fecha en la agenda.");
+                        ModelState.AddModelError(string.Empty, "Ya existe esta especialización.");
                     }
                     else
                     {
@@ -112,7 +110,7 @@ namespace DentaService.API.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(shedule);
+            return View(especialization);
         }
 
 
@@ -123,14 +121,14 @@ namespace DentaService.API.Controllers
                 return NotFound();
             }
 
-            Shedule shedule = await _context.Shedules
+            Especialization especialization = await _context.Especializations
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (shedule == null)
+            if (especialization == null)
             {
                 return NotFound();
             }
 
-            _context.Shedules.Remove(shedule);
+            _context.Especializations.Remove(especialization);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
