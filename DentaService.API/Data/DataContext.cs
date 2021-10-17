@@ -15,7 +15,11 @@ namespace DentaService.API.Data
         }
         public DbSet<DetailService> DetailServices { get; set; }
 
+        public DbSet<Diagnostic> Diagnostics  { get; set; }
+
         public DbSet<Especialization> Especializations { get; set; }
+
+        public DbSet<Equipment> Equipments { get; set; }
 
         public DbSet<Shedule> Shedules { get; set; }
 
@@ -23,7 +27,9 @@ namespace DentaService.API.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<DetailService>().HasIndex(x => x.Value).IsUnique();
+            modelBuilder.Entity<Diagnostic>().HasIndex(x => x.Remark).IsUnique();
             modelBuilder.Entity<Especialization>().HasIndex(x => x.Description).IsUnique();
+            modelBuilder.Entity<Equipment>().HasIndex(x => x.Description).IsUnique();
             modelBuilder.Entity<Shedule>().HasIndex(x => x.Date).IsUnique();
         }
     }
