@@ -3,22 +3,23 @@ using DentaService.API.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DentaService.API.Controllers
 {
-    public class EspecializationsController : Controller
+    public class DetailServicesController : Controller
     {
         private readonly DataContext _context;
 
-        public EspecializationsController(DataContext context)
+        public DetailServicesController(DataContext context)
         {
             _context = context;
         }
-
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Especializations.ToListAsync());
+            return View(await _context.DetailServices.ToListAsync());
         }
 
         public IActionResult Create()
@@ -28,13 +29,13 @@ namespace DentaService.API.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Especialization especialization)
+        public async Task<IActionResult> Create(DetailService detailService)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Add(especialization);
+                    _context.Add(detailService);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -42,7 +43,7 @@ namespace DentaService.API.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe esta especialización.");
+                        ModelState.AddModelError(string.Empty, "Ya existe este detalle del servicio.");
                     }
                     else
                     {
@@ -55,7 +56,7 @@ namespace DentaService.API.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(especialization);
+            return View(detailService);
         }
 
 
@@ -66,19 +67,19 @@ namespace DentaService.API.Controllers
                 return NotFound();
             }
 
-            Especialization especialization = await _context.Especializations.FindAsync(id);
-            if (especialization == null)
+            DetailService detailService = await _context.DetailServices.FindAsync(id);
+            if (detailService == null)
             {
                 return NotFound();
             }
-            return View(especialization);
+            return View(detailService);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Especialization especialization)
+        public async Task<IActionResult> Edit(int id, DetailService detailService)
         {
-            if (id != especialization.ID)
+            if (id != detailService.ID)
             {
                 return NotFound();
             }
@@ -87,7 +88,7 @@ namespace DentaService.API.Controllers
             {
                 try
                 {
-                    _context.Update(especialization);
+                    _context.Update(detailService);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -95,7 +96,7 @@ namespace DentaService.API.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe esta especialización.");
+                        ModelState.AddModelError(string.Empty, "Ya existe este detalle del servicio.");
                     }
                     else
                     {
@@ -108,7 +109,7 @@ namespace DentaService.API.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(especialization);
+            return View(detailService);
         }
 
 
@@ -119,14 +120,14 @@ namespace DentaService.API.Controllers
                 return NotFound();
             }
 
-            Especialization especialization = await _context.Especializations
+            DetailService detailService = await _context.DetailServices
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (especialization == null)
+            if (detailService == null)
             {
                 return NotFound();
             }
 
-            _context.Especializations.Remove(especialization);
+            _context.DetailServices.Remove(detailService);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
