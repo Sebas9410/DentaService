@@ -7,12 +7,10 @@ namespace DentaService.API.Data.Entities
 
         public int ID { get; set; }
 
-        [Display(Name = "Precio")]
+        [Display(Name = "Metodo de Pago")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public decimal Value { get; set; }
+        public string PaymentMethod { get; set; }
 
-        [Display(Name = "Descuento")]
-        public int Discount { get; set; }
     }
 }

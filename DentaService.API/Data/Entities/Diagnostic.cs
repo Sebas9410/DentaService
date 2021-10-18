@@ -12,7 +12,7 @@ namespace DentaService.API.Data.Entities
         public int ID { get; set; }
 
         [Display(Name = "Observacion")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener mas de 100 carácteres")]
+        [MaxLength(300, ErrorMessage = "El campo {0} no puede tener mas de 300 carácteres")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Remark { get; set; }
 

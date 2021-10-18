@@ -26,7 +26,7 @@ namespace DentaService.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<DetailService>().HasIndex(x => x.Value).IsUnique();
+            modelBuilder.Entity<DetailService>().HasIndex(x => x.PaymentMethod).IsUnique();
             modelBuilder.Entity<Diagnostic>().HasIndex(x => x.Remark).IsUnique();
             modelBuilder.Entity<Especialization>().HasIndex(x => x.Description).IsUnique();
             modelBuilder.Entity<Equipment>().HasIndex(x => x.Description).IsUnique();
