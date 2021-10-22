@@ -1,5 +1,6 @@
 ﻿using DentaService.API.Data;
 using DentaService.API.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace DentaService.API.Controllers
 {
+    [Authorize(Roles = "Dentist")]
     public class EspecializationsController : Controller
     {
         private readonly DataContext _context;

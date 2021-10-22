@@ -1,4 +1,7 @@
 ﻿using DentaService.API.Data.Entities;
+using DentaService.API.Helpers;
+using DentaService.Common.Enums;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,10 +10,12 @@ namespace DentaService.API.Data
     public class SeedDb
     {
         private readonly DataContext _context;
+        private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
+            _userHelper = userHelper;
         }
 
         public async Task SeedAsync()
@@ -20,11 +25,43 @@ namespace DentaService.API.Data
             await CheckDiagnosticsAsync();
             await CheckEquipmentAsync();
             await CheckEspecializationsAsync();
+            await CheckRolesAsync();
+            await CheckUserAsync("1010", "cedula", "Sebastian", "Alzate", "sebas@yopmail.com", "304 249 2232", "Calle 40 105 146", UserType.Dentist);
+            await CheckUserAsync("2020", "cedula", "Juan", "Zuluaga", "zulu@yopmail.com", "304 322 4620", "Calle luna Calle sol", UserType.Client);
+            await CheckUserAsync("3030", "cedula", "Daniela", "Sanchez", "dani@yopmail.com", "304 234 5679", "Calle 32 456 432", UserType.Client);
 
 
         }
 
+        private async Task CheckUserAsync(string document,string documentType, string firstName, string lastName, string email, string phoneNumber, string address, UserType userType)
+        {
+            User user = await _userHelper.GetUserAsync(email);
+            if(user == null)
+            {
+                user = new User
+                {
+                    Adress = address,
+                    Document = document,
+                    DocumentType= documentType,
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    PhoneNumber = phoneNumber,
+                    UserName = email,
+                    UserType = userType
 
+                };
+
+                await _userHelper.AddUserAsync(user, "123456");
+                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+            }
+        }
+
+        private async Task CheckRolesAsync()
+        {
+            await _userHelper.CheckRoleAsync(UserType.Dentist.ToString());
+            await _userHelper.CheckRoleAsync(UserType.Client.ToString());
+        }
 
         private async Task CheckDetailServicesAsync()
         {

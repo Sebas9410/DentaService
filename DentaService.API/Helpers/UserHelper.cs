@@ -1,8 +1,8 @@
-﻿using DentaService.API.Data.Entities;
+﻿using DentaService.API.Data;
+using DentaService.API.Data.Entities;
+using DentaService.API.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DentaService.API.Helpers
@@ -10,35 +10,58 @@ namespace DentaService.API.Helpers
 
     public class UserHelper : IUserHelper
     {
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DataContext _context;
+        private readonly SignInManager<User> _signInManager;
 
-        public UserHelper(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UserHelper(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DataContext context, SignInManager<User> signInManager)
         {
-
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _context = context;
+            _signInManager = signInManager;
         }
 
-        public Task<IdentityResult> AddUserAsync(User user, string password)
+        public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
-            throw new NotImplementedException();
+            return await _userManager.CreateAsync(user, password);
         }
 
-        public Task AddUserToRoleAsync(User user, string roleName)
+
+        public async Task AddUserToRoleAsync(User user, string roleName)
         {
-            throw new NotImplementedException();
+            await _userManager.AddToRoleAsync(user, roleName);
         }
 
-        public Task CheckRoleAsync(string roleName)
+
+        public async Task CheckRoleAsync(string roleName)
         {
-            throw new NotImplementedException();
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                await _roleManager.CreateAsync(new IdentityRole { Name = roleName });
+            }
         }
 
-        public Task<User> GetUserAsync(string email)
+        public async Task<User> GetUserAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public Task<bool> IsUserInRoleAsync(User user, string roleName)
+        public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
-            throw new NotImplementedException();
+            return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
+        public async Task<SignInResult> LoginAsync(LoginViewModel model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

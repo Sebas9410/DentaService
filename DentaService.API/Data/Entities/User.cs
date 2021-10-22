@@ -1,6 +1,7 @@
 ﻿using DentaService.Common.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DentaService.API.Data.Entities
@@ -34,10 +35,6 @@ namespace DentaService.API.Data.Entities
         [Display(Name = "Foto")]
         public Guid ImageId { get; set; }
 
-        [Display(Name = "Agenda")]
-        [MaxLength(20, ErrorMessage = "El campo {0} no puede tener mas de {1} carácteres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public Shedule Shedule { get; set; }
 
         //TODO: Fix the image path
         [Display(Name = "Foto")]

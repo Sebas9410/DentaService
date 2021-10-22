@@ -17,9 +17,9 @@ namespace DentaService.API.Data.Entities
 
         [Display(Name = "Campus")]
         [MaxLength(30, ErrorMessage = "El campo {0} no puede tener mas de 30 carácteres")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Campus { get; set; }
 
-        public ICollection<User> Users { get; set; }
+
+        
     }
 }
